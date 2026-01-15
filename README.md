@@ -6,6 +6,22 @@
     <h1><code>pyannote</code> speaker diarization toolkit</h1>
 </div>
 
+## Installation
+
+Create a conda environment and pip install from requirements.txt at `sc-hiro-backend/voice_bio_service/voice_bio`.
+
+Then
+
+```bash
+pip install pyannote.audio
+pip install numpy==2.3
+sudo apt install ffmpeg libavutil-dev libavcodec-dev libavformat-dev
+```
+
+Make sure to export an authenticated HF token to the env var HF_PYANNOTE_TOKEN
+
+
+## Org README
 
 `pyannote.audio` is an open-source toolkit written in Python for speaker diarization. Based on [PyTorch](https://pytorch.org) machine learning framework, it comes with state-of-the-art [pretrained models and pipelines](https://hf.co/pyannote), that can be further finetuned to your own data for even better performance.
 
