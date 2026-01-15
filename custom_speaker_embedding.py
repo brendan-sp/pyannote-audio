@@ -5,21 +5,18 @@ import torch.nn.functional as F
 from functools import cached_property
 from torch.nn.utils.rnn import pad_sequence
 from pyannote.audio.core.inference import BaseInference
-sys.path.insert(0, "/home/brendanoconnor/sc-hiro-backend")
-sys.path.insert(0, "/home/brendanoconnor/sc-hiro-backend/voice_bio_service")
 from espnet2.bin.spk_inference import Speech2Embedding
-# Now voice_bio is a top-level module, matching the internal imports
+sys.path.insert(0, "../sc-hiro-backend")
+sys.path.insert(0, "../sc-hiro-backend/voice_bio_service")
 from voice_bio.rawnet3 import RawNet3Inferencer
 
+
 class MyRawNet3Inferencer(RawNet3Inferencer):
-    def __init__(self):
+    def __init__(self, model_checkpoint_path: str):
         """Initialize RawNet3 model and VAD."""
         # Initialize device for model placement
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         device_str = str(self.device)  # Convert to string for ESPnet
-
-        # Download model checkpoint
-        model_checkpoint_path = "/home/brendanoconnor/.cache/voice-biometrics/train_12m/58epoch_eer=7.96.pth"
 
         # Initialize ESPnet model with correct device
         pretrained_model = Speech2Embedding.from_pretrained(
@@ -195,7 +192,7 @@ class MyCustomSpeakerEmbedding(BaseInference):
         self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
         # Initialize the RawNet3 model
-        self.model = MyRawNet3Inferencer()
+        self.model = MyRawNet3Inferencer(model_path)
         
         if device is not None:
             self.model.to(device)
